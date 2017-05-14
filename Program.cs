@@ -7,21 +7,36 @@ namespace LINQ
     public static class Extensions 
     {
         public static IEnumerable<T> InterleaveSequenceWith<T>
-            (this IEnumberable<T> first, IEnumerable<T> second)
+            (this IEnumerable<T> first, IEnumerable<T> second)
         {
-            //implement something
+            var firstIter = first.GetEnumerator();
+            var secondIter = second.GetEnumerator();
+
+            while (firstIter.MoveNext() && secondIter.MoveNext())
+            {
+                yield return firstIter.Current;
+                yield return secondIter.Current;
+            }
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
-            var startingDeck = from s in Suits() from r in Ranks() select new { Suit = s, Rank = r };
+            var startingDeck = from s in Suits() 
+                                from r in Ranks() 
+                                select new { Suit = s, Rank = r };
 
-            var top = startingDeck.Take(26);
-            var bottom = startingDeck.Skip(26);
 
             foreach (var c in startingDeck)
+            {
+                Console.WriteLine(c);
+            }
+            var top = startingDeck.Take(26);
+            var bottom = startingDeck.Skip(26);
+            var shuffle = top.InterleaveSequenceWith(bottom);
+            
+            foreach(var c in shuffle)
             {
                 Console.WriteLine(c);
             }
