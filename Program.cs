@@ -4,11 +4,22 @@ using System.Linq;
 
 namespace LINQ
 {
+    public static class Extensions 
+    {
+        public static IEnumerable<T> InterleaveSequenceWith<T>
+            (this IEnumberable<T> first, IEnumerable<T> second)
+        {
+            //implement something
+        }
+    }
     class Program
     {
         static void Main(string[] args)
         {
             var startingDeck = from s in Suits() from r in Ranks() select new { Suit = s, Rank = r };
+
+            var top = startingDeck.Take(26);
+            var bottom = startingDeck.Skip(26);
 
             foreach (var c in startingDeck)
             {
