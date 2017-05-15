@@ -73,9 +73,9 @@ namespace LINQ
 
             do
             {
-                shuffle = shuffle.Skip(26)
+                shuffle = shuffle.Take(26)
                         .LogQuery("Bottom Half")
-                        .InterleaveSequenceWith(shuffle.Take(26).LogQuery("Top Half"))
+                        .InterleaveSequenceWith(shuffle.Skip(26).LogQuery("Top Half"))
                         .LogQuery("Shuffle")
                         .ToArray();
 
