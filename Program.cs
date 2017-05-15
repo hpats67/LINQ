@@ -17,7 +17,7 @@ namespace LINQ
 
             do
             {
-                shuffle = shuffle.Take(26).InterleaveSequenceWith(shuffle.Skip(26));
+                shuffle = shuffle.Skip(26).InterleaveSequenceWith(shuffle.Take(26));
 
                 foreach (var c in shuffle)
                 {
