@@ -4,9 +4,56 @@ using System.Linq;
 
 namespace LINQ
 {
+    public enum Suit
+    {
+        Clubs, 
+        Diamonds,
+        Hearts, 
+        Spades
+    }
+    public enum Rank
+    {
+        Two,
+        Three,
+        Four,
+        Five,
+        Six,
+        Seven,
+        Eight,
+        Nine,
+        Ten,
+        Jack, 
+        Queen, 
+        King,
+        Ace
+    }
     class Program
     {
-        static void Main(string[] args)
+        static IEnumerable<Suit> Suits()
+        {
+            yield return Suit.Clubs;
+            yield return Suit.Diamonds;
+            yield return Suit.Hearts;
+            yield return Suit.Spades;
+        }
+
+        static IEnumerable<Rank> Ranks()
+        {
+            yield return Rank.Two;
+            yield return Rank.Three;
+            yield return Rank.Four;
+            yield return Rank.Five;
+            yield return Rank.Six;
+            yield return Rank.Seven;
+            yield return Rank.Eight;
+            yield return Rank.Nine;
+            yield return Rank.Ten;
+            yield return Rank.Jack;
+            yield return Rank.Queen;
+            yield return Rank.King;
+            yield return Rank.Ace;
+        }
+        public static void Main(string[] args)
         {
             var startingDeck = (from s in Suits().LogQuery("Suit Generation")
                                 from r in Ranks().LogQuery("Rank Generation")
@@ -27,9 +74,10 @@ namespace LINQ
             do
             {
                 shuffle = shuffle.Skip(26)
-                            .LogQuery("Bottom Half")
-                            .InterleaveSequenceWith(shuffle.Take(26).LogQuery("Top Half"))
-                            .LogQuery("Shuffle");
+                        .LogQuery("Bottom Half")
+                        .InterleaveSequenceWith(shuffle.Take(26).LogQuery("Top Half"))
+                        .LogQuery("Shuffle")
+                        .ToArray();
 
                 foreach (var c in shuffle)
                 {
@@ -40,31 +88,6 @@ namespace LINQ
             } while(!startingDeck.SequenceEquals(shuffle));
 
             Console.WriteLine(times);
-        }
-        static IEnumerable<string> Suits()
-        {
-            yield return "clubs";
-            yield return "diamonds";
-            yield return "hearts";
-            yield return "spades";
-        }
-
-        static IEnumerable<string> Ranks()
-        {
-            yield return "one";
-            yield return "two";
-            yield return "three";
-            yield return "four";
-            yield return "five";
-            yield return "six";
-            yield return "seven";
-            yield return "eight";
-            yield return "nine";
-            yield return "ten";
-            yield return "jack";
-            yield return "queen";
-            yield return "king";
-            yield return "ace";
         }
     }
 }
