@@ -4,21 +4,6 @@ using System.Linq;
 
 namespace LINQ
 {
-    public static class Extensions 
-    {
-        public static IEnumerable<T> InterleaveSequenceWith<T>
-            (this IEnumerable<T> first, IEnumerable<T> second)
-        {
-            var firstIter = first.GetEnumerator();
-            var secondIter = second.GetEnumerator();
-
-            while (firstIter.MoveNext() && secondIter.MoveNext())
-            {
-                yield return firstIter.Current;
-                yield return secondIter.Current;
-            }
-        }
-    }
     class Program
     {
         static void Main(string[] args)
@@ -27,19 +12,33 @@ namespace LINQ
                                 from r in Ranks() 
                                 select new { Suit = s, Rank = r };
 
+            var times= 0;
+            var shuffle = startingDeck;
 
-            foreach (var c in startingDeck)
+            do
             {
-                Console.WriteLine(c);
-            }
-            var top = startingDeck.Take(26);
-            var bottom = startingDeck.Skip(26);
-            var shuffle = top.InterleaveSequenceWith(bottom);
+                shuffle = shuffle.Take(26).InterleaveSequenceWith(shuffle.Skip(26));
+
+                foreach (var c in shuffle)
+                {
+                    Console.WriteLine(c);
+                }
+                Console.WriteLine();
+                times++;
+            } while(!startingDeck.SequenceEquals(shuffle));
+            Console.WriteLine(times);
+            // foreach (var c in startingDeck)
+            // {
+            //     Console.WriteLine(c);
+            // }
+            // var top = startingDeck.Take(26);
+            // var bottom = startingDeck.Skip(26);
+            // var shuffle = top.InterleaveSequenceWith(bottom);
             
-            foreach(var c in shuffle)
-            {
-                Console.WriteLine(c);
-            }
+            // foreach(var c in shuffle)
+            // {
+            //     Console.WriteLine(c);
+            // }
         }
         static IEnumerable<string> Suits()
         {
