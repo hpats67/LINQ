@@ -32,5 +32,17 @@ namespace LINQ
         }
         return true;
       }
+    
+
+    public static IEnumerable<T> LogQuery<T>
+      (this IEnumerable<T> sequence, string tag)
+      {
+        using (var writer = File.AppendText("debug.log"))
+        {
+          writer.WriteLine($"Executing Query {tag}");
+        }
+
+        return sequence;
+      }
     }
 }
